@@ -10,7 +10,7 @@ pipeline {
                 }
             }
             steps {
-                sh "mvn clean install -Dmaven.test.skip"
+                sh "mvn clean install -Dmaven.test.skip -Dcheckstyle.skip"
             }
         }
         stage('maven test') {
