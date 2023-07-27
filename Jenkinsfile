@@ -36,13 +36,13 @@ pipeline {
                    fi;
                 """
                 // if the secret_agent container is running, delete it in order to create a new one
-                sh """ if [ \$(docker ps --format '{{.Names}}' | grep -w secret_agent &> /dev/null) ]; then
+                sh """ if [ \$(docker ps --format '{{.Names}}' | grep -w spring-petclinic &> /dev/null) ]; then
                      docker rm -f secret_agent;
                    fi;
                 """
                 sh "docker build -t spring-petclinic:v1 ."
                 sh "docker tag secretagent:v1 localhost:5000/spring-petclinic:v1"
-                sh "docker run -d --network='host' -p 8081:8080 --name spring-petclinic --restart=always localhost:5000/spring-petclinic:v1"
+                sh "docker run -dp 8081:8080 --name spring-petclinic --restart=always localhost:5000/spring-petclinic:v1"
             }
         }
     }
