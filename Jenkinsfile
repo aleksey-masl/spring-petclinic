@@ -44,8 +44,8 @@ pipeline {
                    fi;
                 """
                 sh "docker build -t ${SERVICE_NAME}:v1 ."
-                sh "docker tag ${SERVICE_NAME}:v1 localhost:5000/${SERVICE_NAME}:v1"
-                sh "docker run -dp 8081:8080 --name ${SERVICE_NAME} --restart=always localhost:5000/${SERVICE_NAME}:v1"
+                sh "docker tag ${SERVICE_NAME}+:v1 localhost:5000/+${SERVICE_NAME}+:v1"
+                sh "docker run -dp 8081:8080 --name ${SERVICE_NAME} --restart=always localhost:5000/+${SERVICE_NAME}+:v1"
             }
         }
     }
