@@ -37,7 +37,7 @@ pipeline {
                 """
                 // if the secret_agent container is running, delete it in order to create a new one
                 sh """ if [ \$(docker ps --format '{{.Names}}' | grep -w spring-petclinic &> /dev/null) ]; then
-                     docker rm -f secret_agent;
+                     docker rm -f spring-petclinic;
                    fi;
                 """
                 sh "docker build -t spring-petclinic:v1 ."
