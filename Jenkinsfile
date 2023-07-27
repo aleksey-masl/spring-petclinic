@@ -40,8 +40,9 @@ pipeline {
                      docker rm -f secret_agent;
                    fi;
                 """
-                sh "docker build -t spring-petclinic:v1 . "
-                sh "docker tag secretagent:v1 localhost:5000/secretagent:v1 "
+                sh "docker build -t spring-petclinic:v1 ."
+                sh "docker tag secretagent:v1 localhost:5000/spring-petclinic:v1"
+                sh "docker run -d --network='host' -p 8081:8080 --name spring-petclinic --restart=always localhost:5000/spring-petclinic:v1"
             }
         }
     }
