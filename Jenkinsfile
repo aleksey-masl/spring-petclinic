@@ -1,6 +1,9 @@
 pipeline {
     agent none
-
+    environment {
+        // replace github_token with the copy pasted iD
+        SERVICE_NAME = spring-petclinic
+            }
     stages {
         stage('maven build') {
             agent{
@@ -36,13 +39,13 @@ pipeline {
                    fi;
                 """
                 // if the secret_agent container is running, delete it in order to create a new one
-                sh """ if [ \$(docker ps --format '{{.Names}}' | grep -w spring-petclinic &> /dev/null) ]; then
-                     docker rm -f spring-petclinic;
+                sh """ if [ \$(docker ps --format '{{.Names}}' | grep -w ${SERVICE_NAME} &> /dev/null) ]; then
+                     docker rm -f ${SERVICE_NAME};
                    fi;
                 """
-                sh "docker build -t spring-petclinic:v1 ."
-                sh "docker tag secretagent:v1 localhost:5000/spring-petclinic:v1"
-                sh "docker run -dp 8081:8080 --name spring-petclinic --restart=always localhost:5000/spring-petclinic:v1"
+                sh "docker build -t ${SERVICE_NAME}:v1 ."
+                sh "docker tag ${SERVICE_NAME}:v1 localhost:5000/${SERVICE_NAME}:v1"
+                sh "docker run -dp 8081:8080 --name ${SERVICE_NAME} --restart=always localhost:5000/${SERVICE_NAME}:v1"
             }
         }
     }
