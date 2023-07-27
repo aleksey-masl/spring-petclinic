@@ -5,7 +5,7 @@ pipeline {
         stage('maven build') {
             agent{
                 docker {
-                    image 'maven:3.8.3-openjdk-17'
+                    image 'maven:3.5.0'
                     args '-v $HOME/.m2:/root/.m2'
                 }
             }
@@ -16,7 +16,7 @@ pipeline {
         stage('maven test') {
             agent{
                 docker {
-                    image 'maven:3.8.3-openjdk-17'
+                    image 'maven:3.5.0'
                     args '-v $HOME/.m2:/root/.m2'
                 }
             }
