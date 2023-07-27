@@ -1,10 +1,11 @@
 pipeline {
-    agent {label "linux"}
-
-    tools {maven "maven-3.8.6"}
+    agent none
 
     stages {
         stage('maven build') {
+            agent{
+                docker {image 'maven:3.5.0'}
+            }
             steps {
                 sh "mvn clean install -Dmaven.test.skip"
             }
