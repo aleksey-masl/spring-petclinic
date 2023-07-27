@@ -24,5 +24,25 @@ pipeline {
                 sh "mvn test -Dcheckstyle.skip"
             }
         }
+        stage('release') {
+            agent{
+                label 'linux'
+            }
+            steps {
+                // If thAe local registry container does not exists, create it
+                sh "id"
+                sh """ if ! [ \$(docker ps --format '{{.Names}}' | grep -w registry &> /dev/null) ]; then
+                     docker run -d --network='host' -p 5000:5000 --restart=always --name registry registry:2;
+                   fi;
+                """
+                // if the secret_agent container is running, delete it in order to create a new one
+                sh """ if [ \$(docker ps --format '{{.Names}}' | grep -w secret_agent &> /dev/null) ]; then
+                     docker rm -f secret_agent;
+                   fi;
+                """
+                sh "docker build -t spring-petclinic:v1 . "
+                sh "docker tag secretagent:v1 localhost:5000/secretagent:v1 "
+            }
+        }
     }
 }
